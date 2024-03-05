@@ -2,11 +2,10 @@
 using HomeWorkGame.Services.ServiceBuilder.ServiceBuilderAbstractions;
 using HomeWorkGame.Services.ServiceBuilder.ServiceBuilderImplementations;
 using HomeWorkGame.Services.ServiceBuilder.ServiceBuilderInfrastructure;
-using HomeWorkGame.Services.ServiceImplementation;
 using HomeWorkGame.UserInterface.UserInterfaceAbstractions;
 using HomeWorkGame.UserInterface.UserInterfaceContracts;
 
-namespace HomeWorkGame.Services;
+namespace HomeWorkGame.Services.ServiceImplementation;
 
 public class GameService(IUserInterface ui)
 {

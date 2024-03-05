@@ -1,15 +1,16 @@
 ﻿using HomeWorkGame.Models;
 using HomeWorkGame.Services.ServiceBuilder.ServiceBuilderAbstractions;
 using HomeWorkGame.Services.ServiceContracts;
+using HomeWorkGame.Services.ServicesAbstractions;
 using HomeWorkGame.UserInterface.UserInterfaceAbstractions;
 
 namespace HomeWorkGame.Services.ServiceBuilder.ServiceBuilderImplementations;
 
 public class EasyGameDifficultyBuilder(IUserInterface ui) : GameDifficultyBuilder
 {
-    private readonly GameDifficulty _gameDifficulty = new();
+    private readonly IGameDifficulty _gameDifficulty = new GameDifficulty();
 
-    public override GameDifficulty GetResult()
+    public override IGameDifficulty GetResult()
     {
         return _gameDifficulty;
     }
@@ -21,7 +22,7 @@ public class EasyGameDifficultyBuilder(IUserInterface ui) : GameDifficultyBuilde
         var rangeFrom = ui.GetUserNumber();
         ui.PrintMessage("Введите число, на котором заканчивается ограничение числа..");
         var rangeTo = ui.GetUserNumber();
-        _gameDifficulty.RandomNumber = new RandomNumber(rangeFrom, rangeTo);
+        _gameDifficulty.CreateRandomNumber(rangeFrom, rangeTo);
     }
 
     public override void SetGameDifficulty()

@@ -11,6 +11,6 @@ public class RandomNumber
 
     public RandomNumber(int rangeFrom, int rangeTo)
     {
-        Value = new Random().Next(rangeFrom, rangeTo);
+        
     }
 }

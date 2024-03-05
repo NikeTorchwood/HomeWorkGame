@@ -9,9 +9,9 @@ namespace HomeWorkGame.Services.ServiceImplementation;
 public class RandomGame : IRandomGame
 {
     private readonly IUserInterface _ui;
-    private readonly GameDifficulty _gameDifficulty;
+    private readonly IGameDifficulty _gameDifficulty;
     private int _currentAttempt;
-    public RandomGame(IUserInterface ui, GameDifficulty gameDifficulty)
+    public RandomGame(IUserInterface ui, IGameDifficulty gameDifficulty)
     {
         _ui = ui;
         _gameDifficulty = gameDifficulty;
@@ -32,14 +32,15 @@ public class RandomGame : IRandomGame
 
     private AttemptStates CheckIsAttemptsLeft()
     {
-        if (_gameDifficulty.Attempt == null || _gameDifficulty.Attempt.AmountToAttempt == 0)
+        if (_gameDifficulty.CheckAttemptIsNull())
         {
             return AttemptStates.HaveAttempts;
         }
 
-        if (_currentAttempt < _gameDifficulty.Attempt.AmountToAttempt)
+        var remainingAttempt = _gameDifficulty.CalculateRemainingAttempts(_currentAttempt);
+        if (remainingAttempt>0)
         {
-            _ui.PrintMessage($"Осталось {_gameDifficulty.Attempt.AmountToAttempt - _currentAttempt} попыток..");
+            _ui.PrintMessage($"Осталось {remainingAttempt} попыток..");
             return AttemptStates.HaveAttempts;
         }
         _ui.ClearUI();
@@ -53,12 +54,12 @@ public class RandomGame : IRandomGame
         switch (CheckIsAttemptsLeft())
         {
             case AttemptStates.AttemptsOver:
-                _ui.PrintMessage($"Конец игры.. Загаданное число было {_gameDifficulty.RandomNumber.Value}..");
+                _ui.PrintMessage($"Конец игры.. Загаданное число было {_gameDifficulty.GetHiddenNumber()}..");
                 return GameStates.GameOver;
             case AttemptStates.HaveAttempts:
                 _currentAttempt++;
                 var userNumber = _ui.GetUserNumber();
-                var hiddenNumber = _gameDifficulty.RandomNumber.Value;
+                var hiddenNumber = _gameDifficulty.GetHiddenNumber();
                 if (hiddenNumber < userNumber)
                 {
                     _ui.PrintMessage("Загаданное число меньше, вашего..");
